@@ -25,31 +25,19 @@ namespace MultiGridProgressBars
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public ObservableCollection<ViewModel> MyData { get; set; } = new ObservableCollection<ViewModel>();
-        public bool IsLoaded { get; set; }
         public MainPage()
         {
-            this.InitializeComponent();
-            this.DataContext = this;
+            InitializeComponent();
+            DataContext = new MainPageViewModel();
         }
 
-        private async Task GetData()
-        {
-            await Task.Delay(TimeSpan.FromSeconds(2));
-            MyData.Add(new ViewModel { Name = "Item 1" });
-            MyData.Add(new ViewModel { Name = "Item 2" });
-            MyData.Add(new ViewModel { Name = "Item 3" });
-            MyData.Add(new ViewModel { Name = "Item 4" });
-            MyData.Add(new ViewModel { Name = "Item 5" });
-            MyData.Add(new ViewModel { Name = "Item 6" });
-            MyData.Add(new ViewModel { Name = "Item 7" });
-            IsLoaded = true;
-        }
+        public MainPageViewModel Vm => DataContext as MainPageViewModel;
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            GetData();
+
+            await Vm.GetDataAsync();
         }
     }
 }
